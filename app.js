@@ -1,8 +1,29 @@
 const express = require("express");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const validateCourse = require("./validations/validate-course");
+
+const logger = require("./middelware/logger");
+const authentication = require("./middelware/authenticate");
+
+// built-in middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+
+// third-party middleware
+app.use(helmet());
+// to enable morgan just in development environment (// NODE_ENV=production)
+if (app.get("env") === "development") {
+  app.use(morgan("tiny"));
+  console.log("morgan is enabled!");
+}
+
+// custom middleware
+app.use(logger);
+app.use(authentication);
 
 const courses = [
   { id: 1, name: "course1" },

@@ -1,5 +1,7 @@
 const express = require("express");
 const config = require("config");
+const startDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 const helmet = require("helmet");
 const morgan = require("morgan");
 const app = express();
@@ -19,12 +21,15 @@ app.use(helmet());
 // to enable morgan just in development environment (// NODE_ENV=production)
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
-  console.log("morgan is enabled!");
+  startDebugger("morgan is enabled!...");
 }
 
-// config part
+// config part NODE_ENV=development app_password=anything
 console.log(config.get("mail.password"));
 console.log(config.get("name"));
+
+// debug  DEBUG=app:startup  or DEBUG=app:db,app:startup or DEBUG=*
+dbDebugger("db is enabled");
 
 // custom middleware
 app.use(logger);

@@ -1,0 +1,7 @@
+{
+  "name": "default",
+
+  "mail": {
+    "host": "def-mail-server"
+  }
+}

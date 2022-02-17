@@ -1,4 +1,5 @@
 const express = require("express");
+const config = require("config");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const app = express();
@@ -20,6 +21,10 @@ if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   console.log("morgan is enabled!");
 }
+
+// config part
+console.log(config.get("mail.password"));
+console.log(config.get("name"));
 
 // custom middleware
 app.use(logger);

@@ -1,0 +1,8 @@
+{
+  "name": "here production",
+
+  "mail": {
+    "host": "prod-mail-server",
+    "password": "app_password"
+  }
+}

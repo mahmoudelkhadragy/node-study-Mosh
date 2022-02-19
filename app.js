@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require('path')
 const config = require("config");
 const startDebugger = require('debug')('app:startup');
 const dbDebugger = require('debug')('app:db');
@@ -14,7 +15,11 @@ const authentication = require("./middelware/authenticate");
 // built-in middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+
+// set view with pug
+app.set('views', path.join(__dirname, "views")); //default
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, "public")));
 
 // third-party middleware
 app.use(helmet());
@@ -35,6 +40,8 @@ dbDebugger("db is enabled");
 app.use(logger);
 app.use(authentication);
 
+
+
 const courses = [
   { id: 1, name: "course1" },
   { id: 2, name: "course2" },
@@ -42,7 +49,12 @@ const courses = [
 let length = courses.length;
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello Mahmoud</h1>");
+  // res.send("<h1>Hello Mahmoud</h1>");
+  res.render('index', { title: 'my node app' })
+});
+app.get("/course", (req, res) => {
+  // res.send("<h1>Hello Mahmoud</h1>");
+  res.render('course', { title: 'my node app', course: courses[0] })
 });
 
 // get all courses
